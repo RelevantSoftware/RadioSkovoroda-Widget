@@ -1,5 +1,6 @@
 # Radio Skovoroda Widget
 Integrate radio SKOVORODA with your site.
+Listen to the radio online http://radioskovoroda.com/.
 
 ### How to install widget
 Copy and paste this code into every webpage you want to show widget.
