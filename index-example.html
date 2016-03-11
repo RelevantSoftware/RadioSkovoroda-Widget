@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-	<meta charset="UTF-8">
-	<title>Radio Skovoroda widget example page</title>
+    <meta charset="UTF-8">
+    <title>Radio Skovoroda widget example page</title>
 </head>
 <body>
 Example page
 <script type="text/javascript">
-	(function (src) {
-		var h = document.getElementsByTagName("head")[0];
-		var s = document.createElement("script");
-		s.type = "text/javascript";
-		s.src = src + "?_=" + Date.now();
-		s.async = "async";
-		h.appendChild(s);
-	})("//radioskovoroda.com/widget/js/skovoroda-widget.min.js");
+    (function (src, options) {
+        var h = document.getElementsByTagName("head")[0];
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.src = src + "?_=" + Date.now();
+        s.async = "async";
+        h.appendChild(s);
+        window['radioskovoroda-widget'] = options;
+    })("dist/js/skovoroda-widget.min.js", {style: 'centered'});
 </script>
 </body>
 </html>

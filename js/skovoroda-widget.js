@@ -4,6 +4,42 @@
 
 (function () {
 
+    /**
+     * Create widget iFrame style.
+     * @param name
+     */
+    function getWidgetStyle(name) {
+
+        var baseStyle = {
+                frameStyle: {display: 'block', height: '35px', position: 'fixed', zIndex: '999', border: 'none'},
+                bodyStyle: {}
+            },
+            styles = {
+                fullWidth: {
+                    frameStyle: {width: '100%', bottom: 0, left: 0},
+                    bodyStyle: {marginBottom: '35px'}
+                },
+                centered: {
+                    frameStyle: {width: '60%', bottom: '5px', left: '20%'},
+                    bodyStyle: {}
+                }
+            },
+            styleName = styles.hasOwnProperty(name) ? name : 'fullWidth',
+            activeStyle = styles[styleName];
+
+        /* Apply styles to body */
+        for (var styleKey in activeStyle.bodyStyle) {
+            baseStyle.bodyStyle[styleKey] = activeStyle.bodyStyle[styleKey];
+        }
+
+        /* Apply styles to frame */
+        for (var styleKey in activeStyle.frameStyle) {
+            baseStyle.frameStyle[styleKey] = activeStyle.frameStyle[styleKey];
+        }
+
+        return baseStyle;
+    }
+
     function RadioSkovorodaImporter() {
 
         var _self = {};
@@ -14,6 +50,20 @@
          * @protected
          */
         _self.frameSrc = "//radioskovoroda.com/widget/layout.html";
+
+        /**
+         * Load fame options.
+         * @returns object
+         */
+        _self.getFrameOptions = function () {
+            return window['radioskovoroda-widget'] ? window['radioskovoroda-widget'] : {};
+        };
+
+        _self.applyElementStyles = function (el, style) {
+            for (var styleKey in style) {
+                el.style[styleKey] = style[styleKey];
+            }
+        };
 
         /**
          * Generate frame source url with unique parameter.
@@ -30,17 +80,17 @@
          * @protected
          */
         _self.buildFrame = function () {
-            var frameElement = document.createElement("iframe");
+            var frameElement = document.createElement("iframe"),
+                frameOptions = _self.getFrameOptions(),
+                style = getWidgetStyle(frameOptions.style);
+
             frameElement.id = "radioskovoroda-widget";
-            frameElement.style.display = "block";
-            frameElement.style.width = "100%";
-            frameElement.style.height = "35px";
-            frameElement.style.position = "fixed";
-            frameElement.style.bottom = "0px";
-            frameElement.style.left = "0px";
-            frameElement.style.zIndex = "999";
-            frameElement.style.border = "none";
+
+            _self.applyElementStyles(document.body, style.bodyStyle);
+            _self.applyElementStyles(frameElement, style.frameStyle);
+
             frameElement.src = _self.generateFrameSrc();
+
             return frameElement;
         };
 
@@ -49,7 +99,6 @@
          * @protected
          */
         _self.importFrame = function () {
-            document.body.style.marginBottom = "35px";
             document.body.appendChild(_self.buildFrame());
         };
 
