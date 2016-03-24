@@ -5,6 +5,19 @@
 (function () {
 
     /**
+     * @param {*} styles
+     * @param {*} additionalStyle
+     * @returns {*}
+     */
+    function applyStyles(styles, additionalStyle) {
+        for (var styleKey in additionalStyle) {
+            if (additionalStyle.hasOwnProperty(styleKey)) {
+                styles[styleKey] = additionalStyle[styleKey];
+            }
+        }
+    }
+
+    /**
      * Create widget iFrame style.
      * @param name
      */
@@ -20,22 +33,15 @@
                     bodyStyle: {marginBottom: '35px'}
                 },
                 centered: {
-                    frameStyle: {width: '60%', bottom: '5px', left: '20%'},
+                    frameStyle: {width: '60%', bottom: '5px', left: '20%', 'border-radius': '5px'},
                     bodyStyle: {}
                 }
             },
             styleName = styles.hasOwnProperty(name) ? name : 'fullWidth',
             activeStyle = styles[styleName];
 
-        /* Apply styles to body */
-        for (var styleKey in activeStyle.bodyStyle) {
-            baseStyle.bodyStyle[styleKey] = activeStyle.bodyStyle[styleKey];
-        }
-
-        /* Apply styles to frame */
-        for (var styleKey in activeStyle.frameStyle) {
-            baseStyle.frameStyle[styleKey] = activeStyle.frameStyle[styleKey];
-        }
+        applyStyles(baseStyle.bodyStyle, activeStyle.bodyStyle); // Merge styles for body
+        applyStyles(baseStyle.frameStyle, activeStyle.frameStyle); // Merge styles for frame
 
         return baseStyle;
     }
@@ -59,12 +65,6 @@
             return window['radioskovoroda-widget'] ? window['radioskovoroda-widget'] : {};
         };
 
-        _self.applyElementStyles = function (el, style) {
-            for (var styleKey in style) {
-                el.style[styleKey] = style[styleKey];
-            }
-        };
-
         /**
          * Generate frame source url with unique parameter.
          * @returns {string}
@@ -86,8 +86,8 @@
 
             frameElement.id = "radioskovoroda-widget";
 
-            _self.applyElementStyles(document.body, style.bodyStyle);
-            _self.applyElementStyles(frameElement, style.frameStyle);
+            applyStyles(document.body.style, style.bodyStyle);
+            applyStyles(frameElement.style, style.frameStyle);
 
             frameElement.src = _self.generateFrameSrc();
 

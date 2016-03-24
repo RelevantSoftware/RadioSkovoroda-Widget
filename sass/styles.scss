@@ -12,10 +12,11 @@
   justify-content: space-between;
   align-items: center;
   .radio-bar__logo {
-    margin-left: 30px;
+    padding: 0 9px;
+    background-color: #55298f;
     img {
       height: 28px;
-      padding-top: 2px;
+      padding-top: 3px;
     }
   }
   .radio-bar__play-block {
@@ -30,7 +31,7 @@
     font-size: 17px;
     display: inline-block;
     margin-right: 25px;
-    padding-top: 3px;
+    margin-top: 2.5px;
     font-family: 'BloggerSansMedium';
     color: #000;
     span {
