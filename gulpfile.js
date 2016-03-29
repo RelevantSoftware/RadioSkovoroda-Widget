@@ -10,7 +10,7 @@ var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var clean = require('gulp-clean');
 var runSequence = require('run-sequence');
-
+var inlinesource = require('gulp-inline-source');
 
 /* Build and Minify Styles */
 
@@ -31,6 +31,12 @@ gulp.task('minify-css', function () {
         .pipe(cssmin())
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('./dist/css'));
+});
+
+gulp.task('inlinesource', function () {
+    return gulp.src('./dist/layout.html')
+        .pipe(inlinesource())
+        .pipe(gulp.dest('./dist'));
 });
 
 
@@ -57,7 +63,7 @@ gulp.task('img', function () {
 });
 
 gulp.task('layout', function () {
-    return gulp.src('skovoroda-bar.html')
+    return gulp.src('layoyut.html')
         .pipe(rename({basename: 'layout'}))
         .pipe(gulp.dest('./dist/'));
 });
@@ -71,7 +77,7 @@ gulp.task('dist:clear', function () {
 });
 
 gulp.task('dist:publish', function () {
-    return runSequence('fonts', 'img', 'layout', 'sass', 'minify-css', 'minify-js');
+    return runSequence('fonts', 'img', 'layout', 'sass', 'minify-css', 'minify-js', 'inlinesource');
 });
 
 gulp.task('dist', function () {

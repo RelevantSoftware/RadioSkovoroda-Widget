@@ -71,7 +71,10 @@
          * @protected
          */
         _self.generateFrameSrc = function () {
-            return _self.frameSrc + '?_=' + Date.now();
+            var frameOptions = _self.getFrameOptions(),
+                options = JSON.stringify(frameOptions);
+
+            return _self.frameSrc + '?_=' + Date.now() + '#' + options;
         };
 
         /**
